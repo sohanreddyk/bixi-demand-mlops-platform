@@ -33,25 +33,20 @@ This project builds an **end-to-end machine learning pipeline** to predict **hou
 ---
 ## Workflow
 
-### 1. Data Cleaning & EDA
+### 1. Data Cleaning, EDA & Feature Engineering
 **Notebook:** `data_cleaning_eda_feature_engineering.ipynb`
 
-- **Data Sources:** BIXI trip history (2024 + May/Oct 2025) and hourly weather data from Open-Meteo
+- **Data Sources:** [BIXI Montreal Open Data](https://bixi.com/en/open-data/) and [Montreal Weather Open Data](https://montreal.weatherstats.ca/download.html)
 - **Cleaning Steps:**
-  - Convert timestamps from milliseconds to datetime
-  - Standardize column names (lowercase)
-  - Remove invalid trips (missing stations, zero duration)
+  - Convert timestamps to datetime and choose data in 2024 and May/Oct 2025
+  - Fill in missing values by global means and linear interpolation
+  - Remove invalid trips (missing values cannot be filled, outlier duration trip)
   - Filter to top 400 stations by 2024 trip volume
 - **Exploratory Analysis:**
   - Demand patterns by hour, day of week, and month
   - Holiday vs. non-holiday demand comparison
-  - Weather impact analysis
-
-### 2. Feature Engineering
-**Notebook:** `data_cleaning_eda_feature_engineering.ipynb`
-
-Features engineered for the model:
-
+  - Distribution and correlation analysis of weather variables
+- **Features engineered for models:**
 | Feature | Description |
 |---------|-------------|
 | `station_hour_demand_24` | Mean 2024 demand for station × hour |
@@ -65,7 +60,8 @@ Features engineered for the model:
 
 **Target Variable:** `total_demand` (sum of departures and returns per station per hour)
 
-### 3. Station Clustering
+---
+### 2. Station Clustering
 **Notebook:** `model_clustering.ipynb`
 
 - **Algorithm:** K-Means (k=3)
@@ -127,7 +123,7 @@ The dashboard provides three views:
 
 ## Data Sources
 
-- **BIXI Trip Data:** [BIXI Montreal Open Data](https://bixi.com/en/open-data/)
+- **BIXI Trip Data:** 
 - **Weather Data:** [Open-Meteo API](https://open-meteo.com/)
 
 ## Notes
