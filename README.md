@@ -47,6 +47,7 @@ This project builds an **end-to-end machine learning pipeline** to predict **hou
   - Holiday vs. non-holiday demand comparison
   - Distribution and correlation analysis of weather variables
 - **Features engineered for models:**
+
 | Feature | Description |
 |---------|-------------|
 | `station_hour_demand_24` | Mean 2024 demand for station × hour |
