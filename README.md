@@ -1,9 +1,9 @@
+---
 # BIXI Station Hourly Demand Prediction
 
+---
 ## Project Overview
-This project builds an **end-to-end machine learning pipeline** to predict **hourly bike-sharing demand** for **BIXI stations in Montreal** and presents the results through an **interactive Streamlit dashboard** with **real-time weather data**.
-
-Using **historical BIXI trip data** and **Montreal weather data**, the pipeline performs data cleaning and feature engineering on **temporal and weather features**, trains a **LightGBM regression model** with **Bayesian hyperparameter optimization**, and groups stations into demand tiers using **K-Means clustering**. The Streamlit app integrates a **16-day weather forecast** from the **Open-Meteo API** and visualizes station clusters with a **PyDeck heatmap** to support **station-level operational planning**.
+This project builds an **end-to-end machine learning pipeline** to predict **hourly bike-sharing demand** for **BIXI stations in Montreal**. Using **historical BIXI trip data** and **Montreal weather data**, the pipeline performs data cleaning and feature engineering on **temporal and weather features**, trains a **LightGBM regression model** with **Bayesian hyperparameter optimization**, and groups stations into demand tiers using **K-Means clustering**. The Streamlit app integrates a **16-day weather forecast** from the **Open-Meteo API** and visualizes station clusters with a **PyDeck heatmap** to support **station-level operational planning**.
 
 ## Repository Structure
 
