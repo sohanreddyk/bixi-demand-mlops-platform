@@ -1,0 +1,207 @@
+# 🚲 BIXI Station Hourly Demand Prediction
+
+A machine learning project that predicts hourly bike-sharing demand for BIXI stations in Montreal, featuring an interactive Streamlit dashboard with real-time weather integration.
+
+## Project Overview
+
+### Problem Statement
+BIXI, Montreal's public bike-sharing system, needs to anticipate station-level bike demand to optimize fleet rebalancing and improve service availability. This project addresses that challenge by building a predictive model that forecasts hourly demand at individual stations.
+
+### Solution
+This end-to-end ML pipeline:
+- Processes historical trip data from BIXI's open data portal
+- Engineers features from temporal patterns and weather conditions
+- Trains a LightGBM regression model with Bayesian hyperparameter optimization
+- Clusters stations by demand level using K-Means
+- Deploys predictions through an interactive Streamlit dashboard with 16-day weather forecast integration
+
+## Repository Structure
+
+```
+├── data/
+│   ├── .gitattributes
+│   └── model_df.zip              # Compressed feature-engineered dataset
+├── notebooks/
+│   ├── data_cleaning_eda_feature_engineering.ipynb   # Data processing & EDA
+│   ├── model_clustering.ipynb                        # Station clustering analysis
+│   └── model_lightgbm.ipynb                          # Model training & evaluation
+├── app.py                        # Streamlit dashboard application
+├── model_lightgbm.txt            # Trained LightGBM model
+├── meta_lightgbm.pkl             # Model metadata & feature lookups
+├── station_clusters.csv          # Station cluster assignments
+├── requirements.txt              # Python dependencies
+└── runtime.txt                   # Python runtime version
+```
+
+### Key Files
+
+| File | Description |
+|------|-------------|
+| `data_cleaning_eda_feature_engineering.ipynb` | Cleans BIXI trip data, performs EDA, and engineers features including temporal patterns and weather variables |
+| `model_clustering.ipynb` | Applies K-Means clustering to segment stations into low/medium/high demand tiers |
+| `model_lightgbm.ipynb` | Trains LightGBM with Optuna hyperparameter tuning, evaluates performance, and generates SHAP explanations |
+| `app.py` | Streamlit app providing demand forecasts and cluster visualization |
+| `model_lightgbm.txt` | Serialized LightGBM booster for inference |
+| `meta_lightgbm.pkl` | Contains feature names, station lists, and 2024 baseline demand lookups |
+| `station_clusters.csv` | Station metadata with cluster labels and mean demand |
+
+## Workflow
+
+### 1. Data Cleaning & EDA
+**Notebook:** `data_cleaning_eda_feature_engineering.ipynb`
+
+- **Data Sources:** BIXI trip history (2024 + May/Oct 2025) and hourly weather data from Open-Meteo
+- **Cleaning Steps:**
+  - Convert timestamps from milliseconds to datetime
+  - Standardize column names (lowercase)
+  - Remove invalid trips (missing stations, zero duration)
+  - Filter to top 400 stations by 2024 trip volume
+- **Exploratory Analysis:**
+  - Demand patterns by hour, day of week, and month
+  - Holiday vs. non-holiday demand comparison
+  - Weather impact analysis
+
+### 2. Feature Engineering
+**Notebook:** `data_cleaning_eda_feature_engineering.ipynb`
+
+Features engineered for the model:
+
+| Feature | Description |
+|---------|-------------|
+| `station_hour_demand_24` | Mean 2024 demand for station × hour |
+| `station_dow_demand_24` | Mean 2024 demand for station × day-of-week |
+| `station_month_demand_24` | Mean 2024 demand for station × month |
+| `hour`, `dow`, `month` | Temporal indicators |
+| `is_holiday` | Quebec/Montreal public holiday flag |
+| `temperature`, `feels_like` | Hourly temperature metrics |
+| `wind_speed` | Wind speed in km/h |
+| `bad_weather` | Binary flag (humidity > 85% and visibility < 10km) |
+
+**Target Variable:** `total_demand` (sum of departures and returns per station per hour)
+
+### 3. Station Clustering
+**Notebook:** `model_clustering.ipynb`
+
+- **Algorithm:** K-Means (k=3)
+- **Clustering Feature:** Mean hourly demand per station (2024)
+- **Output Clusters:**
+  - **Low demand:** 247 stations (~7.4 avg trips/hour)
+  - **Medium demand:** 120 stations (~12.2 avg trips/hour)
+  - **High demand:** 33 stations (~19.2 avg trips/hour)
+- **Validation:** Silhouette score indicates moderate-to-strong cluster separation
+
+### 4. Model Training & Evaluation
+**Notebook:** `model_lightgbm.ipynb`
+
+- **Algorithm:** LightGBM (Gradient Boosting Decision Trees)
+- **Data Split:**
+  - Training: 2024 data (83%)
+  - Validation: May 2025 (9%)
+  - Test: October 2025 (8%)
+- **Hyperparameter Tuning:** Bayesian optimization via Optuna (40 trials)
+- **Evaluation Metrics:**
+
+| Dataset | R² | RMSE | MAE |
+|---------|-----|------|-----|
+| Train (2024) | 0.72 | 5.08 | 3.21 |
+| Validation (May 2025) | 0.64 | 5.75 | 3.73 |
+| Test (Oct 2025) | 0.63 | 5.85 | 3.82 |
+
+- **Model Interpretation:** SHAP analysis reveals top predictors are `station_hour_demand_24`, `station_month_demand_24`, and `temperature`
+
+### 5. Streamlit Application
+**File:** `app.py`
+
+The dashboard provides three views:
+
+1. **16-Day Demand Forecast**
+   - Uses real-time weather data from Open-Meteo API
+   - Single time-point prediction or full-day hourly forecast
+   - Interactive charts with weather overlay
+
+2. **Custom Input Forecast**
+   - Manual weather parameter entry
+   - Predictions for any future date
+
+3. **Station Clusters Visualization**
+   - Interactive PyDeck heatmap
+   - Filter by cluster (low/medium/high)
+   - Station-level tooltips with demand statistics
+
+## Technical Stack
+
+| Category | Tools |
+|----------|-------|
+| **Data Processing** | pandas, NumPy |
+| **Visualization** | Matplotlib, Seaborn, Plotly, PyDeck |
+| **Machine Learning** | LightGBM, scikit-learn, Optuna |
+| **Explainability** | SHAP |
+| **Web Application** | Streamlit |
+| **Weather API** | Open-Meteo |
+
+## How to Run Locally
+
+### Prerequisites
+- Python 3.11+
+- pip or conda
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd bixi-demand-prediction
+   ```
+
+2. **Create a virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Extract the data** (if running notebooks)
+   ```bash
+   cd data
+   unzip model_df.zip
+   cd ..
+   ```
+
+### Running the Streamlit App
+
+```bash
+streamlit run app.py
+```
+
+The app will open in your browser at `http://localhost:8501`.
+
+### Running the Notebooks
+
+Launch Jupyter and run notebooks in order:
+```bash
+jupyter notebook
+```
+
+1. `data_cleaning_eda_feature_engineering.ipynb`
+2. `model_clustering.ipynb`
+3. `model_lightgbm.ipynb`
+
+## Data Sources
+
+- **BIXI Trip Data:** [BIXI Montreal Open Data](https://bixi.com/en/open-data/)
+- **Weather Data:** [Open-Meteo API](https://open-meteo.com/)
+
+## Notes
+
+- Demand is defined as the **sum of departures and returns** at each station per hour
+- The model uses 2024 historical patterns as baseline features for future predictions
+- Only the top 400 stations by trip volume are included in the analysis
+- Weather forecasts are limited to 16 days ahead (API constraint)
+
+## License
+
+This project is for educational and research purposes.
