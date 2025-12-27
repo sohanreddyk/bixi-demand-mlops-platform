@@ -1,5 +1,8 @@
 ---
 # BIXI Station Hourly Demand Prediction
+**Live demo:** https://bixi-demand-dashboard.streamlit.app/
+![1](https://github.com/user-attachments/assets/e9f1b592-d6eb-4a76-9f8a-89b023310578)
+![2](https://github.com/user-attachments/assets/4301eb9e-e869-4a4f-82d9-20184280d3a6)
 
 ---
 ## Project Overview
