@@ -99,39 +99,20 @@ This project builds an **end-to-end machine learning pipeline** to predict **hou
 
 The dashboard provides three views:
 
-1. **16-Day Demand Forecast**
-   - Uses real-time weather data from Open-Meteo API
+- **16-Day Demand Forecast**
+   - Use real-time weather data from [Open-Meteo API](https://open-meteo.com/) (cached daily)
    - Single time-point prediction or full-day hourly forecast
-   - Interactive charts with weather overlay
+   - Interactive line charts of predicted demand with a weather overlay
 
-2. **Custom Input Forecast**
+- **Custom Input Forecast**
    - Manual weather parameter entry
-   - Predictions for any future date
+   - Predictions for any future datetime
 
-3. **Station Clusters Visualization**
-   - Interactive PyDeck heatmap
+- **Station Clusters Visualization**
+   - Interactive PyDeck heatmap with station-level tooltips
    - Filter by cluster (low/medium/high)
-   - Station-level tooltips with demand statistics
 
-## Technical Stack
+---
+## Limitations
 
-| Category | Tools |
-|----------|-------|
-| **Data Processing** | pandas, NumPy |
-| **Visualization** | Matplotlib, Seaborn, Plotly, PyDeck |
-| **Machine Learning** | LightGBM, scikit-learn, Optuna |
-| **Explainability** | SHAP |
-| **Web Application** | Streamlit |
-| **Weather API** | Open-Meteo |
 
-## Data Sources
-
-- **BIXI Trip Data:** 
-- **Weather Data:** [Open-Meteo API](https://open-meteo.com/)
-
-## Notes
-
-- Demand is defined as the **sum of departures and returns** at each station per hour
-- The model uses 2024 historical patterns as baseline features for future predictions
-- Only the top 400 stations by trip volume are included in the analysis
-- Weather forecasts are limited to 16 days ahead (API constraint)
