@@ -114,5 +114,12 @@ The dashboard provides three views:
 
 ---
 ## Limitations
+- **Limited feature set:** Features are restricted to historical demand, time, and weather. The model struggles to capture extreme peaks.
+- **Departures vs. arrivals not separated:** The model predicts only total demand, which limits operational usefulness.
+- **Station capacity not considered:** All stations are compared by usage intensity without accounting for dock capacity, reducing practical relevance.
+- **Sample selection bias:** The dataset includes only the top 400 stations by demand (out of >1,100). Lower-volume stations may exhibit different patterns.
+- **Historical pattern reinforcement:** Heavy reliance on historical demand may miss emerging trends and changes.
 
-
+---
+## Team
+Rui Zhao, Laura Manzanos Zuriarrain, Ibukunoluwa Adeleye, Mariam Gueye, Calvin Chun Fung Yip
