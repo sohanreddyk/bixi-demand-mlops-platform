@@ -276,8 +276,3 @@ Team guide: [`docs/github_actions_guide.md`](docs/github_actions_guide.md).
 - EC2 Streamlit + App Runner FastAPI deployment: [`docs/fastapi_streamlit_deployment_guide.md`](docs/fastapi_streamlit_deployment_guide.md)
 - Archived AWS deployment screenshots: [`docs/aws_deployment_evidence/`](docs/aws_deployment_evidence/)
 - GitHub Actions / CI: [`docs/github_actions_guide.md`](docs/github_actions_guide.md)
-
----
-| Sarah Liu | [sarahliu-mma](https://github.com/sarahliu-mma) |
-| Ruihe Zhang (Louis) | [Mudkipython](https://github.com/Mudkipython) |
-| Rui Zhao | [ruizhaoca](https://github.com/ruizhaoca) |
