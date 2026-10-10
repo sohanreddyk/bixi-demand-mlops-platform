@@ -278,12 +278,6 @@ Team guide: [`docs/github_actions_guide.md`](docs/github_actions_guide.md).
 - GitHub Actions / CI: [`docs/github_actions_guide.md`](docs/github_actions_guide.md)
 
 ---
-
-## Team
-
-| Name | GitHub |
-|------|--------|
-| Othmane Zizi | [othmane-zizi-pro](https://github.com/othmane-zizi-pro) |
 | Sarah Liu | [sarahliu-mma](https://github.com/sarahliu-mma) |
 | Ruihe Zhang (Louis) | [Mudkipython](https://github.com/Mudkipython) |
 | Rui Zhao | [ruizhaoca](https://github.com/ruizhaoca) |
